@@ -1,0 +1,164 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriGrant | Farmer Support Portal</title>
+    <link rel="stylesheet" href="{% static 'subsidy/style.css' %}" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a class="brand" href="/">
+        <span class="brand-icon">A</span>
+        <span>AgriGrant</span>
+      </a>
+      <span class="nav-label">FARMER SUPPORT PORTAL</span>
+    </header>
+
+    <main class="page-layout">
+      <section class="intro">
+        <span class="eyebrow">EMERGENCY FARM RELIEF</span>
+        <h1>Support for your farm.<br /><span>Hope for tomorrow.</span></h1>
+        <p class="intro-text">
+          Apply for emergency agricultural relief through a simple subsidy
+          eligibility assessment.
+        </p>
+
+        <div class="benefits">
+          <div class="benefit">
+            <span class="benefit-icon">01</span>
+            <div>
+              <strong>Simple application</strong>
+              <p>Enter your farming details in one place.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <span class="benefit-icon">02</span>
+            <div>
+              <strong>Clear eligibility rules</strong>
+              <p>Understand your result based on the criteria.</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <span class="benefit-icon">03</span>
+            <div>
+              <strong>Relief assessment</strong>
+              <p>See the calculated subsidy if eligible.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <div class="card-heading">
+          <span class="card-kicker">APPLICATION FORM</span>
+          <h2>Farmer details</h2>
+          <p>Enter accurate information to assess eligibility.</p>
+        </div>
+
+        <form method="POST">
+          {% csrf_token %}
+
+          <div class="field">
+            <label for="farmer_name">Full name</label>
+            <input
+              type="text"
+              id="farmer_name"
+              name="farmer_name"
+              placeholder="Enter farmer's full name"
+              autocomplete="name"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="land_size_acres">Land holding</label>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="land_size_acres"
+                name="land_size_acres"
+                placeholder="e.g. 4.5"
+                min="0.01"
+                step="0.01"
+                required
+              />
+              <span class="input-unit">ACRES</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="annual_income">Annual income</label>
+            <div class="input-wrap">
+              <span class="currency">₹</span>
+              <input
+                type="number"
+                id="annual_income"
+                name="annual_income"
+                placeholder="e.g. 120000"
+                min="0"
+                step="0.01"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="damage_pct">Crop damage</label>
+              <span class="field-hint">0–100%</span>
+            </div>
+            <div class="input-wrap">
+              <input
+                type="number"
+                id="damage_pct"
+                name="damage_pct"
+                placeholder="e.g. 35"
+                min="0"
+                max="100"
+                step="0.01"
+                required
+              />
+              <span class="input-unit">%</span>
+            </div>
+          </div>
+
+          <button type="submit">
+            Assess eligibility <span aria-hidden="true">→</span>
+          </button>
+
+          <p class="privacy-note">
+            Please ensure your details are correct before submitting.
+          </p>
+        </form>
+
+        {% if status %}
+        <div class="result-card">
+          <h2>{{ message }}</h2>
+          <p>Farmer: {{ farmer_name }}</p>
+          <p>Status: <strong>{{ status }}</strong></p>
+
+          {% if status == "APPROVED" %}
+          <p>
+            Subsidy Amount:
+            <strong>₹{{ calculated_subsidy }}</strong>
+          </p>
+          {% else %}
+          <p>You do not meet the subsidy eligibility conditions.</p>
+          {% endif %}
+        </div>
+        {% endif %} {% if error %}
+        <div class="result-card">
+          <p>{{ error }}</p>
+        </div>
+        {% endif %}
+      </section>
+    </main>
+
+    <footer>
+      <span>AgriGrant</span>
+      <span>Supporting farmers through difficult seasons.</span>
+    </footer>
+  </body>
+</html>

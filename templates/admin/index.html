@@ -1,0 +1,28 @@
+
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div id="content-main">
+
+    <div class="module">
+        <table>
+            <caption>AgriGrant Management</caption>
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        <a href="{% url 'dashboard' %}">
+                            Farmer Applications Dashboard
+                        </a>
+                    </th>
+                    <td>
+                        <a href="{% url 'dashboard' %}" class="viewlink">
+                            View Applications
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

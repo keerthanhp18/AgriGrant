@@ -1,0 +1,54 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriGrant Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'subsidy/style.css' %}" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>AgriGrant Admin Dashboard</h1>
+      <p>Review submitted farmer applications.</p>
+
+      <p>
+        <a href="{% url 'admin:index' %}">Django Admin</a> |
+        <a href="/">Back to Home</a>
+      </p>
+
+      <div style="overflow-x: auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Farmer</th>
+              <th>Land (acres)</th>
+              <th>Annual Income</th>
+              <th>Damage (%)</th>
+              <th>Status</th>
+              <th>Subsidy (₹)</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+            <tr>
+              <td>{{ app.farmer_name }}</td>
+              <td>{{ app.land_size_acres }}</td>
+              <td>₹{{ app.annual_income }}</td>
+              <td>{{ app.damage_pct }}%</td>
+              <td>{{ app.status }}</td>
+              <td>₹{{ app.calculated_subsidy }}</td>
+              <td>{{ app.created_at|date:"d M Y, H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7">No applications submitted yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>
